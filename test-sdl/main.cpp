@@ -1,6 +1,7 @@
 #include <iostream>
 #include "CommonFunc.h"
 #include "game_map.h"
+#include "MainObject.h"
 
 BaseObject g_background;
 
@@ -16,6 +17,7 @@ bool InitData()
 		SDL_WINDOWPOS_CENTERED, 
 		SDL_WINDOWPOS_CENTERED, 
 		SCREEN_WIDTH, SCREEN_HEIGHT, 
+
 		SDL_WINDOW_SHOWN);
 	if (g_window == NULL)
 	{
@@ -73,6 +75,13 @@ int main(int argc, char* argv[]) {
 	GameMap game_map;
 	game_map.LoadMap("img/map01.dat");
 	game_map.LoadTiles(g_screen);
+
+
+	MainObject p_player;
+	p_player.LoadImg("img/player_left.png", g_screen);
+	p_player.set_clips();
+
+
 	bool is_quit = false;
 	while (!is_quit)
 	{
@@ -82,13 +91,16 @@ int main(int argc, char* argv[]) {
 			{
 				is_quit = true;
 			}
+			p_player.HandleInputAction(g_event, g_screen);
 		}
+
 		SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
 		SDL_RenderClear(g_screen);
 
 		g_background.Render(g_screen, NULL);
 		game_map.DrawMap(g_screen);
 
+		p_player.Show(g_screen);
 		SDL_RenderPresent(g_screen);
 	}
 	close();

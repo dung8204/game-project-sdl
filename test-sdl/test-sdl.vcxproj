@@ -136,6 +136,7 @@
     <ClCompile Include="CommonFunc.cpp" />
     <ClCompile Include="game_map.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\x64\Debug\background.png" />
@@ -149,6 +150,7 @@
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CommonFunc.h" />
     <ClInclude Include="game_map.h" />
+    <ClInclude Include="MainObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="img\map\map01.dat" />

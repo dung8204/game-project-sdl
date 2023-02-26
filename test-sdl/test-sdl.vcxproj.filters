@@ -27,6 +27,9 @@
     <ClCompile Include="game_map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\x64\Debug\background.png">
@@ -56,6 +59,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
