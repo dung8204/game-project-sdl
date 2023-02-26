@@ -24,9 +24,27 @@
     <ClCompile Include="BaseObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\x64\Debug\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\map\0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\map\2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\map\3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\map\4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\map\5.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -37,5 +55,11 @@
     <ClInclude Include="BaseObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\map\map01.dat" />
   </ItemGroup>
 </Project>

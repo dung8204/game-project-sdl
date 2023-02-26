@@ -134,14 +134,24 @@
   <ItemGroup>
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="CommonFunc.cpp" />
+    <ClCompile Include="game_map.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\x64\Debug\background.png" />
+    <Image Include="img\map\0.png" />
+    <Image Include="img\map\2.png" />
+    <Image Include="img\map\3.png" />
+    <Image Include="img\map\4.png" />
+    <Image Include="img\map\5.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CommonFunc.h" />
+    <ClInclude Include="game_map.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\map\map01.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
