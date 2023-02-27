@@ -1,9 +1,9 @@
 #include "game_map.h"
 
-void GameMap::LoadMap(const char* name)
+void GameMap::LoadMap(std::string name)
 {
 	FILE* fp = NULL;
-	fopen_s(&fp, name, "rb");
+	fopen_s(&fp, name.c_str(), "rb");
 	if (fp == NULL)
 	{
 		return;
@@ -11,6 +11,8 @@ void GameMap::LoadMap(const char* name)
 
 	game_map_.max_x_ = 0;
 	game_map_.max_y_ = 0;
+
+	//load size of map
 	for (int i = 0; i < MAX_MAP_Y; i++)
 	{
 		for (int j = 0; j < MAX_MAP_X; j++)
@@ -38,17 +40,19 @@ void GameMap::LoadMap(const char* name)
 	game_map_.start_x_ = 0;
 	game_map_.start_y_ = 0;
 
-	//game_map_.file_name_ = name;
+	game_map_.file_name_ = name.c_str();
 	fclose(fp);
 
 }
 
+//load tile for map
 void GameMap::LoadTiles(SDL_Renderer* screen)
 {
 	char file_img[30];
 	FILE* fp = NULL;
 	for (int i = 0; i < MAX_TILES; i++)
 	{
+		//load tile voi cau truc number.pbg
 		sprintf_s(file_img, "img/%d.png", i);
 		//kiem tra xem open duoc khong
 		fopen_s(&fp, file_img, "rb");
@@ -74,12 +78,18 @@ void GameMap::DrawMap(SDL_Renderer * screen)
 	int map_x = 0;
 	int map_y = 0;
 
+	
 	map_x = game_map_.start_x_ / TILE_SIZE;
+	//fill block-start tu block truoc ria window
 	x1 = (game_map_.start_x_ % TILE_SIZE * -1);
+	//fill block-end tu block sau ria window
 	x2 = x1 + SCREEN_WIDTH + (x1 == 0 ? 0 : TILE_SIZE);
 
+	
 	map_y = game_map_.start_y_ / TILE_SIZE;
+	//fill block-down tu block truoc ria window
 	y1 = (game_map_.start_y_ % TILE_SIZE) * -1;
+	//fill block-up tu block sau ria window
 	y2 = y1 + SCREEN_HEIGHT + (y1 == 0 ? 0 : TILE_SIZE);
 
 	for (int i = y1; i < y2; i += TILE_SIZE)
