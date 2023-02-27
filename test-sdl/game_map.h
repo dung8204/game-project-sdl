@@ -32,10 +32,11 @@ public:
 	void DrawMap(SDL_Renderer* screen);
 
 	Map getMap() const { return game_map_; };
+	
+	void SetMap(Map& map_data) { game_map_ = map_data; }
 private:
 	//imformation about a block
 	Map game_map_;
-
 	//image of block
 	TileMat tile_mat[MAX_TILES];
 };

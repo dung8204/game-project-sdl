@@ -31,7 +31,7 @@ protected:
 	//save image
 	SDL_Texture* p_object_;
 
-	//save size of image
+	//save information of image
 	SDL_Rect rect_;
 };
 

@@ -27,7 +27,7 @@ void GameMap::LoadMap(std::string name)
 				}
 				if (i > game_map_.max_y_)
 				{
-					game_map_.max_x_ = i;
+					game_map_.max_y_ = i;
 				}
 			}
 		}
