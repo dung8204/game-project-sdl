@@ -135,6 +135,7 @@
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="CommonFunc.cpp" />
     <ClCompile Include="game_map.cpp" />
+    <ClCompile Include="ImpTimer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainObject.cpp" />
   </ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CommonFunc.h" />
     <ClInclude Include="game_map.h" />
+    <ClInclude Include="ImpTimer.h" />
     <ClInclude Include="MainObject.h" />
   </ItemGroup>
   <ItemGroup>

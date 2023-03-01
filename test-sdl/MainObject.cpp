@@ -160,6 +160,14 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 			break;
 		}
 	}
+
+	if (events.type == SDL_MOUSEBUTTONDOWN)
+	{
+		if (events.button.button == SDL_BUTTON_RIGHT)
+		{
+			input_type_.jump_ = 1;
+		}
+	}
 }
 
 void MainObject::DoPlayer(Map& map_data)
@@ -180,6 +188,15 @@ void MainObject::DoPlayer(Map& map_data)
 	else if (input_type_.right_ == 1) 
 	{
 		x_val_ += PLAYER_SPEED;
+	}
+	if (input_type_.jump_ == 1)
+	{
+		if (on_ground_ == true)
+		{
+			y_val_ = -PLAYER_JUNP_VAL;
+			on_ground_ = false;
+		}
+		input_type_.jump_ = 0;
 	}
 
 	CheckToMap(map_data);
@@ -292,6 +309,7 @@ void MainObject::CheckToMap(Map& map_data)
 			{
 				y_pos_ = (y1 + 1) * TILE_SIZE;
 				y_val_ = 0;
+				on_ground_ = false;
 			}
 		}
 	}

@@ -8,6 +8,7 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "BaseObject.h"
+#include <iostream>
 
 //window
 static SDL_Window* g_window = NULL;
@@ -19,6 +20,7 @@ static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 
 //information of screen
+const int FRAME_PER_SECOND = 90; //
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 640;
 
