@@ -16,9 +16,11 @@ MainObject::MainObject()
 	input_type_.jump_ = 0;
 	input_type_.down_ = 0;
 	input_type_.up_ = 0;
-	on_ground_ = false;
+	on_ground_ = true;
+	check_jum_ = false;
 	map_x_ = 0;
 	map_y_ = 0;
+	
 }
 
 MainObject::~MainObject()
@@ -89,13 +91,26 @@ void MainObject::set_clips()
 
 void MainObject::Show(SDL_Renderer* des)
 {
-	if (status_ == WALK_LEFT)
+	if (on_ground_ == true)
 	{
-		LoadImg("img/player_left.png", des);
+		if (status_ == WALK_LEFT)
+		{
+			LoadImg("img/player_left.png", des);
+		}
+		else
+		{
+			LoadImg("img/player_right.png", des);
+		}
 	}
-	else
-	{
-		LoadImg("img/player_right.png", des);
+	else {
+		if (status_ == WALK_LEFT)
+		{
+			LoadImg("img/jum_left.png", des);
+		}
+		else
+		{
+			LoadImg("img/jum_right.png", des);
+		}
 	}
 
 	if (input_type_.left_ == 1 || input_type_.right_ == 1)
@@ -133,6 +148,14 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 				status_ = WALK_RIGHT;
 				input_type_.right_ = 1;
 				input_type_.left_ = 0;
+				if (on_ground_ == true)
+				{
+					LoadImg("img/player_right.png", screen);
+				}
+				else
+				{
+					LoadImg("img/jum_right.png", screen);
+				}
 			}
 			break;
 		case SDLK_LEFT:
@@ -140,6 +163,14 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 				status_ = WALK_LEFT;
 				input_type_.left_ = 1;
 				input_type_.right_ = 0;
+				if (on_ground_ == true)
+				{
+					LoadImg("img/player_left.png", g_screen);
+				}
+				else
+				{
+					LoadImg("img/jum_left.png", g_screen);
+				}
 			}
 			break;
 		}
@@ -326,3 +357,5 @@ void MainObject::CheckToMap(Map& map_data)
 		x_pos_ = map_data.max_x_ - width_frame_ - 1;
 	}
 }
+
+
