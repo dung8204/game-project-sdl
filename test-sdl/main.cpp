@@ -106,6 +106,8 @@ int main(int argc, char* argv[])
 		g_background.Render(g_screen, NULL);
 		
 		Map map_data = game_map.getMap();
+
+		p_player.HandleBullet(g_screen);
 		p_player.SetMapXY(map_data.start_x_, map_data.start_y_);
 		p_player.DoPlayer(map_data);
 		p_player.Show(g_screen);

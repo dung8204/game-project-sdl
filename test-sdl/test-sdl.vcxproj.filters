@@ -27,10 +27,13 @@
     <ClCompile Include="game_map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainObject.cpp">
+    <ClCompile Include="ImpTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImpTimer.cpp">
+    <ClCompile Include="BulletObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,6 +71,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImpTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

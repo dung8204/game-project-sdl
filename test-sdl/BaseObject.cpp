@@ -23,6 +23,7 @@ BaseObject::~BaseObject()
 //class base_object get the image/texture and the size of image/texture
 bool BaseObject::LoadImg(std::string path, SDL_Renderer* screen)
 {
+	Free();
 	//initialize texture
 	SDL_Texture* new_texture = NULL;
 

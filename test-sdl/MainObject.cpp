@@ -2,6 +2,7 @@
 #include "game_map.h"
 
 
+
 MainObject::MainObject()
 {
 	frame_ = 0;
@@ -11,7 +12,7 @@ MainObject::MainObject()
 	y_val_ = 0;
 	width_frame_ = 0;
 	height_frame_ = 0;
-	status_ = -1;
+	status_ = WALK_NONE;
 	input_type_.left_ = 0;
 	input_type_.right_ = 0;
 	input_type_.jump_ = 0;
@@ -94,24 +95,10 @@ void MainObject::Show(SDL_Renderer* des)
 {
 	if (on_ground_ == true)
 	{
-		if (status_ == WALK_LEFT)
-		{
-			LoadImg("img/player_left.png", des);
-		}
-		else
-		{
-			LoadImg("img/player_right.png", des);
-		}
+		UpdateImagePlayer(des);
 	}
 	else {
-		if (status_ == WALK_LEFT)
-		{
-			LoadImg("img/jum_left.png", des);
-		}
-		else
-		{
-			LoadImg("img/jum_right.png", des);
-		}
+		UpdateImagePlayer(des);
 	}
 
 	if (input_type_.left_ == 1 || input_type_.right_ == 1)
@@ -146,63 +133,109 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 {
 	if (events.type == SDL_KEYDOWN)
 	{
-		
 		switch (events.key.keysym.sym)
 		{
-		case SDLK_RIGHT:
+			case SDLK_d:
 			{
 				status_ = WALK_RIGHT;
 				input_type_.right_ = 1;
 				input_type_.left_ = 0;
-				if (on_ground_ == true)
-				{
-					LoadImg("img/player_right.png", screen);
-				}
-				else
-				{
-					LoadImg("img/jum_right.png", screen);
-				}
+				UpdateImagePlayer(screen);
+				break;
 			}
-			break;
-		case SDLK_LEFT:
+			case SDLK_a:
 			{
 				status_ = WALK_LEFT;
 				input_type_.left_ = 1;
 				input_type_.right_ = 0;
-				if (on_ground_ == true)
-				{
-					LoadImg("img/player_left.png", g_screen);
-				}
-				else
-				{
-					LoadImg("img/jum_left.png", g_screen);
-				}
+				UpdateImagePlayer(screen);
+				break;
 			}
-			break;
+			case SDLK_w:
+			{
+				input_type_.jump_ = 1;
+				break;
+			}
 		}
 	}
+
 	else if (events.type == SDL_KEYUP)
 	{
 		switch (events.key.keysym.sym)
 		{
-		case SDLK_RIGHT:
+		case SDLK_d:
 			{
 				input_type_.right_ = 0;
 			}
 			break;
-		case SDLK_LEFT:
+		case SDLK_a:
 			{
 				input_type_.left_ = 0;
 			}
 			break;
+		case SDLK_w:
+			{
+				input_type_.jump_ = 0;
+			}
+			break;
 		}
 	}
-
-	if (events.type == SDL_MOUSEBUTTONDOWN)
+	//change jump key
+	/*if (events.type == SDL_MOUSEBUTTONDOWN)
 	{
 		if (events.button.button == SDL_BUTTON_RIGHT)
 		{
 			input_type_.jump_ = 1;
+		}
+	}*/
+
+	if (events.type == SDL_MOUSEBUTTONDOWN)
+	{
+		if (events.button.button == SDL_BUTTON_LEFT)
+		{
+			BulletObject* p_bullet = new BulletObject();
+			p_bullet->LoadImg("img/bullet.png", screen);
+
+			if (status_ == WALK_LEFT)
+			{
+				p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+				p_bullet->SetRect(this->rect_.x, rect_.y + height_frame_ * 0.25);
+			}
+			else if (status_ == WALK_RIGHT)
+			{
+				p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+				p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.25);
+			}
+			
+			p_bullet->set_x_val(20);
+			p_bullet->set_is_move(true);
+
+			p_bullet_list_.push_back(p_bullet);
+		}
+	}
+}
+
+void MainObject::HandleBullet(SDL_Renderer* des)
+{
+	for (int i = 0; i < p_bullet_list_.size(); i++)
+	{
+		BulletObject* p_bullet = p_bullet_list_.at(i);
+		if (p_bullet != NULL)
+		{
+			if (p_bullet->get_is_move() == true)
+			{
+				p_bullet->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+				p_bullet->Render(des);
+			}
+			else
+			{
+				p_bullet_list_.erase(p_bullet_list_.begin() + i);
+				if (p_bullet != NULL)
+				{
+					delete p_bullet;
+					p_bullet = NULL;
+				}
+			}
 		}
 	}
 }
@@ -245,12 +278,12 @@ void MainObject::DoPlayer(Map& map_data)
 	{
 		come_back_time_--;
 		{
-			if (come_back_time_ == 0)
+			if (come_back_time_ == 0) // reset again
 			{
+				on_ground_ = false;
 				if (x_pos_ > 256)
 				{
 					x_pos_ -= 256; //4 tiles map
-					map_x_ -= 256; //optional
 				}
 				else
 				{
@@ -278,13 +311,15 @@ void MainObject::CenterEntityOnMap(Map& map_data)
 		map_data.start_x_ = map_data.max_x_ - SCREEN_WIDTH;
 	}
 	map_data.start_y_ = y_pos_ - (SCREEN_HEIGHT / 2);
-	if (map_data.start_y_ < 0) {
+	if (map_data.start_y_ < 0)
+	{
 		map_data.start_y_ = 0;
 	}
 	else if (map_data.start_y_ + SCREEN_HEIGHT >= map_data.max_y_)
 	{
 		map_data.start_y_ = map_data.max_y_ - SCREEN_HEIGHT;
 	}
+
 }
 
 void MainObject::CheckToMap(Map& map_data)
@@ -364,6 +399,10 @@ void MainObject::CheckToMap(Map& map_data)
 				y_pos_ = y2 * TILE_SIZE;
 				y_pos_ -= (height_frame_ + 1);
 				y_val_ = 0;
+				if (status_ == WALK_NONE)
+				{
+					status_ = WALK_RIGHT;
+				}
 				on_ground_ = true;
 			}
 		}
@@ -395,4 +434,29 @@ void MainObject::CheckToMap(Map& map_data)
 	}
 }
 
+void MainObject::UpdateImagePlayer(SDL_Renderer* des)
+{
+	if (on_ground_ == true)
+	{
+		if (status_ == WALK_LEFT)
+		{
+			LoadImg("img/player_left.png", des);
+		}
+		else
+		{
+			LoadImg("img/player_right.png", des);
+		}
+	}
+	else
+	{
+		if (status_ == WALK_LEFT)
+		{
+			LoadImg("img/jum_left.png", des);
+		}
+		else
+		{
+			LoadImg("img/jum_right.png", des);
+		}
+	}
+}
 
