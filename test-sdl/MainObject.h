@@ -8,7 +8,7 @@
 
 #define GRAVITY_SPEED 0.8
 #define MAX_FALL_SPEED 10
-#define PLAYER_SPEED 8
+#define PLAYER_SPEED 6
 #define PLAYER_JUNP_VAL 18
 class MainObject : public BaseObject
 {
@@ -21,8 +21,7 @@ public:
 	{
 		WALK_NONE = 0,
 		WALK_RIGHT = 1,
-		WALK_LEFT = 2,
-
+		WALK_LEFT = 2
 	};
 
 	//load image
@@ -82,7 +81,8 @@ private:
 
 	//di chuyen sang phai hay sang trai
 	int status_;
-
+	int gun_mode_;
+	int bullet_type_;
 	bool on_ground_;
 	
 	//luu vi tri ban do

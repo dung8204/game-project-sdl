@@ -22,6 +22,8 @@ MainObject::MainObject()
 	map_x_ = 0;
 	map_y_ = 0;
 	come_back_time_ = 0;
+	gun_mode_ = BulletObject::STRAIGHT;
+	bullet_type_ = BulletObject::NORMAL;
 	
 }
 
@@ -151,9 +153,30 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 				UpdateImagePlayer(screen);
 				break;
 			}
+			case SDLK_k:
+			{
+
+				input_type_.jump_ = 1;
+				break;
+			}
 			case SDLK_w:
 			{
-				input_type_.jump_ = 1;
+				gun_mode_ = BulletObject::UP;
+				break;
+			}
+			case SDLK_s:
+			{
+				gun_mode_ = BulletObject::DOWN;
+				break;
+			}
+			case SDLK_e:
+			{
+				bullet_type_ = BulletObject::SO_HEAD;
+				break;
+			}
+			case SDLK_q:
+			{
+				bullet_type_ = BulletObject::NORMAL;
 				break;
 			}
 		}
@@ -163,21 +186,33 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 	{
 		switch (events.key.keysym.sym)
 		{
-		case SDLK_d:
+			case SDLK_d:
 			{
 				input_type_.right_ = 0;
+				break;
 			}
-			break;
-		case SDLK_a:
+			
+			case SDLK_a:
 			{
 				input_type_.left_ = 0;
+				break;
 			}
-			break;
-		case SDLK_w:
+			
+			case SDLK_k:
 			{
 				input_type_.jump_ = 0;
+				break;
 			}
-			break;
+			case SDLK_w:
+			{
+				gun_mode_ = BulletObject::STRAIGHT;
+				break;
+			}
+			case SDLK_s:
+			{
+				gun_mode_ = BulletObject::STRAIGHT;
+				break;
+			}
 		}
 	}
 	//change jump key
@@ -189,25 +224,64 @@ void MainObject::HandleInputAction(SDL_Event events, SDL_Renderer* screen)
 		}
 	}*/
 
-	if (events.type == SDL_MOUSEBUTTONDOWN)
+	if (events.type == SDL_KEYDOWN)
 	{
-		if (events.button.button == SDL_BUTTON_LEFT)
+		if (events.key.keysym.sym == SDLK_j)
 		{
 			BulletObject* p_bullet = new BulletObject();
-			p_bullet->LoadImg("img/bullet.png", screen);
+			p_bullet->set_bullet_type(bullet_type_);
+			p_bullet->BulletObject::LoadImgBullet(screen, status_);
+			if (gun_mode_ == BulletObject::STRAIGHT)
+			{
+				if (status_ == WALK_LEFT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+					p_bullet->SetRect(this->rect_.x, rect_.y + height_frame_ * 0.25);
+				}
+				else if (status_ == WALK_RIGHT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
+					p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.25);
+				}
+			}
+			else if (gun_mode_ == BulletObject::UP)
+			{
+				if (status_ == WALK_LEFT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_UP_LEFT);
+					p_bullet->SetRect(this->rect_.x, rect_.y + height_frame_ * 0.25);
+				}
+				else if (status_ == WALK_RIGHT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_UP_RIGHT);
+					p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.25);
+				}
+			}
+			else if (gun_mode_ == BulletObject::DOWN)
+			{
+				if (status_ == WALK_LEFT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_LEFT);
+					p_bullet->SetRect(this->rect_.x, rect_.y + height_frame_ * 0.25);
+				}
+				else if (status_ == WALK_RIGHT)
+				{
+					p_bullet->set_bullet_dir(BulletObject::DIR_DOWN_RIGHT);
+					p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.25);
+				}
+			}
 
-			if (status_ == WALK_LEFT)
+			if (bullet_type_ == BulletObject::NORMAL)
 			{
-				p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-				p_bullet->SetRect(this->rect_.x, rect_.y + height_frame_ * 0.25);
+				p_bullet->set_x_val(20);
+				p_bullet->set_y_val(20);
 			}
-			else if (status_ == WALK_RIGHT)
+			else
 			{
-				p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-				p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_ * 0.25);
+				p_bullet->set_x_val(8);
+				p_bullet->set_y_val(8);
 			}
-			
-			p_bullet->set_x_val(20);
+
 			p_bullet->set_is_move(true);
 
 			p_bullet_list_.push_back(p_bullet);
